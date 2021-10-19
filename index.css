@@ -1,0 +1,49 @@
+h1 {
+    text-align: center;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    border: 3px solid black;
+    transition: all 0.3s ease-out
+}
+
+.cell-text {
+    text-align: center;
+    font-size: 4em;
+}
+
+.cell:hover {
+    cursor: pointer;
+}
+
+div .cell:nth-of-type(1), 
+div .cell:nth-of-type(2), 
+div .cell:nth-of-type(3) {
+    border-top: none;
+}
+
+div .cell:nth-of-type(3) {
+    border-right: none;
+}
+
+div .cell:nth-of-type(1) {
+    border-left: none;
+}
+
+div .cell:nth-of-type(2) {
+    border-left: none;
+    border-right: none;
+}
+
+.container div:nth-of-type(4) .cell {
+    border-bottom: none;
+}
+
+.col p {
+    font-size: 2.5em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 0;
+}
