@@ -56,11 +56,11 @@ function passTurn(player) {
 
   if (hasWinner) {
     delay = 2000;
-    modifyCellsEventListener("remove")
+    modifyCellsEventListener("remove");
 
     if (player === "player-1") {
       if (player2 === "cpu-2") {
-        turnDisplay.innerText = "Player Wins!!!";  
+        turnDisplay.innerText = "Player Wins!!!";
       } else {
         turnDisplay.innerText = "Player 1 Wins!!!";
       }
@@ -86,7 +86,7 @@ function passTurn(player) {
 
     if (currentPlayer === "player-1") {
       if (player2 === "cpu-2") {
-        turnDisplay.innerText = "Player's Turn...";  
+        turnDisplay.innerText = "Player's Turn...";
       } else {
         turnDisplay.innerText = "Player 1's Turn...";
       }
@@ -98,6 +98,7 @@ function passTurn(player) {
 
     if (currentPlayer === "cpu-1") {
       turnDisplay.innerText = "CPU 1's Turn...";
+      aiMove();
     }
 
     if (currentPlayer === "cpu-2") {
@@ -106,6 +107,7 @@ function passTurn(player) {
       } else {
         turnDisplay.innerText = "CPU 2's Turn...";
       }
+      aiMove();
     }
   }
 
@@ -161,11 +163,29 @@ function checkForWinner() {
       gameBoard[0][2] === gameBoard[1][1] &&
       gameBoard[0][2] === gameBoard[2][0])
   ) {
-    console.log("WE HAVE A WINNER!!!");
     return true;
   } else {
     return false;
   }
+}
+
+function getFreeCells() {
+  let freeCells = [];
+  for (let cell of cells) {
+    if (cell.innerText === "") {
+      freeCells.push(cell);
+    }
+  }
+  return freeCells;
+}
+
+function aiMove() {
+  let freeCells = getFreeCells();
+  console.log(freeCells);
+  let targetCellIndex = Math.floor(Math.random() * (freeCells.length - 1));
+  setTimeout(() => {
+    freeCells[targetCellIndex].click();
+  }, 3000);
 }
 
 function clearGameBoard() {
@@ -187,7 +207,7 @@ function startNewGame() {
 }
 
 function modifyCellsEventListener(command) {
-  if (command === "add"){
+  if (command === "add") {
     for (let i = 0; i < cells.length; i++) {
       cells[i].addEventListener("click", play);
     }
@@ -231,4 +251,5 @@ modeButtons[2].addEventListener("click", function () {
   player2 = "cpu-2";
   closeOverlay(modes);
   startNewGame();
+  aiMove();
 });
