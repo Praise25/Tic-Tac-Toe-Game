@@ -9,7 +9,11 @@ let modeButtons = document.querySelectorAll(".col-sm-12.btn");
 let currentPlayer = "player-1";
 let player1 = "";
 let player2 = "";
-const gameBoard = [[], [], []];
+const gameBoard = [
+  ["", "", ""],
+  ["", "", ""],
+  ["", "", ""],
+];
 
 function play(e) {
   let piece = "";
@@ -38,31 +42,70 @@ function play(e) {
 
   this.innerText = piece;
   this.classList.add("cell-text");
+  let previousPlayer = currentPlayer;
   currentPlayer = nextPlayer;
   e.target.removeEventListener(e.type, arguments.callee);
   cellIndex = cells.indexOf(this);
   recordMove(cellIndex, piece);
-  passTurn();
+  passTurn(previousPlayer);
 }
 
-function passTurn() {
-  if (currentPlayer === "player-1") {
-    turnDisplay.innerText = "Player 1's Turn...";
-  }
+function passTurn(player) {
+  let hasWinner = checkForWinner();
+  let delay = 0;
 
-  if (currentPlayer === "player-2") {
-    turnDisplay.innerText = "Player 2's Turn...";
-  }
+  if (hasWinner) {
+    delay = 2000;
+    modifyCellsEventListener("remove")
 
-  if (currentPlayer === "cpu-1") {
-    turnDisplay.innerText = "CPU 1's Turn...";
-  }
+    if (player === "player-1") {
+      if (player2 === "cpu-2") {
+        turnDisplay.innerText = "Player Wins!!!";  
+      } else {
+        turnDisplay.innerText = "Player 1 Wins!!!";
+      }
+    }
 
-  if (currentPlayer === "cpu-2") {
-    if (player1 === "player-1") {
-      turnDisplay.innerText = "CPU's Turn...";
-    } else {
-      turnDisplay.innerText = "CPU 2's Turn...";
+    if (player === "player-2") {
+      turnDisplay.innerText = "Player 2 Wins!!!";
+    }
+
+    if (player === "cpu-1") {
+      turnDisplay.innerText = "CPU 1 Wins!!!";
+    }
+
+    if (player === "cpu-2") {
+      if (player1 === "player-1") {
+        turnDisplay.innerText = "CPU Wins!!!";
+      } else {
+        turnDisplay.innerText = "CPU 2 Wins!!!";
+      }
+    }
+  } else {
+    delay = 500;
+
+    if (currentPlayer === "player-1") {
+      if (player2 === "cpu-2") {
+        turnDisplay.innerText = "Player's Turn...";  
+      } else {
+        turnDisplay.innerText = "Player 1's Turn...";
+      }
+    }
+
+    if (currentPlayer === "player-2") {
+      turnDisplay.innerText = "Player 2's Turn...";
+    }
+
+    if (currentPlayer === "cpu-1") {
+      turnDisplay.innerText = "CPU 1's Turn...";
+    }
+
+    if (currentPlayer === "cpu-2") {
+      if (player1 === "player-1") {
+        turnDisplay.innerText = "CPU's Turn...";
+      } else {
+        turnDisplay.innerText = "CPU 2's Turn...";
+      }
     }
   }
 
@@ -70,7 +113,7 @@ function passTurn() {
   turnDisplay.classList.add("overlay-content");
   setTimeout(() => {
     closeOverlay(displayText);
-  }, 1500);
+  }, delay);
 }
 
 function recordMove(cellIndex, piece) {
@@ -84,12 +127,52 @@ function recordMove(cellIndex, piece) {
     position = cellIndex % 3;
     gameBoard[2][position] = piece;
   }
+  // comment out later
   console.log(gameBoard);
 }
 
+function checkForWinner() {
+  if (
+    // check if any row contains 3 of the same piece
+    (gameBoard[0][0] !== "" &&
+      gameBoard[0][0] === gameBoard[0][1] &&
+      gameBoard[0][0] === gameBoard[0][2]) ||
+    (gameBoard[1][0] !== "" &&
+      gameBoard[1][0] === gameBoard[1][1] &&
+      gameBoard[1][0] === gameBoard[1][2]) ||
+    (gameBoard[2][0] !== "" &&
+      gameBoard[2][0] === gameBoard[2][1] &&
+      gameBoard[2][0] === gameBoard[2][2]) ||
+    // check if any column contains 3 of the same piece
+    (gameBoard[0][0] !== "" &&
+      gameBoard[0][0] === gameBoard[1][0] &&
+      gameBoard[0][0] === gameBoard[2][0]) ||
+    (gameBoard[0][1] !== "" &&
+      gameBoard[0][1] === gameBoard[1][1] &&
+      gameBoard[0][1] === gameBoard[2][1]) ||
+    (gameBoard[0][2] !== "" &&
+      gameBoard[0][2] === gameBoard[1][2] &&
+      gameBoard[0][2] === gameBoard[2][2]) ||
+    // check if any diagonal contains 3 of the same piece
+    (gameBoard[0][0] !== "" &&
+      gameBoard[0][0] === gameBoard[1][1] &&
+      gameBoard[0][0] === gameBoard[2][2]) ||
+    (gameBoard[0][2] !== "" &&
+      gameBoard[0][2] === gameBoard[1][1] &&
+      gameBoard[0][2] === gameBoard[2][0])
+  ) {
+    console.log("WE HAVE A WINNER!!!");
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function clearGameBoard() {
-  for (let cell of gameBoard) {
-      cell.length = 0;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      gameBoard[i][j] = "";
+    }
   }
 }
 
@@ -99,13 +182,20 @@ function startNewGame() {
     cells[i].innerText = "";
     cells[i].classList.remove("cell-text");
   }
-  addCellEventListeners();
+  modifyCellsEventListener("add");
   clearGameBoard();
 }
 
-function addCellEventListeners() {
-  for (let i = 0; i < cells.length; i++) {
-    cells[i].addEventListener("click", play);
+function modifyCellsEventListener(command) {
+  if (command === "add"){
+    for (let i = 0; i < cells.length; i++) {
+      cells[i].addEventListener("click", play);
+    }
+  } else if (command === "remove") {
+    for (let i = 0; i < cells.length; i++) {
+      // cells[i].addEventListener("click", play);
+      cells[i].removeEventListener("click", play);
+    }
   }
 }
 
