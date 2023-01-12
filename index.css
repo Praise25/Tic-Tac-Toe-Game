@@ -99,6 +99,8 @@ p#turn-display {
   justify-content: center;
 }
 
-#game-board {
-  max-width: 50%;
+@media (min-width: 768px) {
+  #game-board {
+    max-width: 60%;
+  }
 }
