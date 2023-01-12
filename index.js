@@ -49,7 +49,7 @@ function play(e) {
   recordMove(cellIndex, piece);
   setTimeout(() => {
     passTurn(previousPlayer);
-  }, 1000);
+  }, 300);
 }
 
 function passTurn(player) {
