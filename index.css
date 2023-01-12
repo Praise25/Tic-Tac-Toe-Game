@@ -81,6 +81,24 @@ p#turn-display {
   display: flex;
 }
 
-#display-text .row .col-sm-12{
+#modes .row {
+  margin: 0;
+  width: 100%;
+}
+
+#display-text .row .col-sm-12 {
   padding: 0;
+}
+
+#display-text .row {
+  margin-left: 0;
+}
+
+#action-btns .col {
+  display: flex;
+  justify-content: center;
+}
+
+#game-board {
+  max-width: 50%;
 }
