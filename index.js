@@ -130,7 +130,7 @@ function recordMove(cellIndex, piece) {
     gameBoard[2][position] = piece;
   }
   // comment out later
-  console.log(gameBoard);
+  // console.log(gameBoard);
 }
 
 function checkForWinner() {
@@ -181,7 +181,7 @@ function getFreeCells() {
 
 function aiMove() {
   let freeCells = getFreeCells();
-  console.log(freeCells);
+  // console.log(freeCells);
   let targetCellIndex = Math.floor(Math.random() * (freeCells.length - 1));
   setTimeout(() => {
     freeCells[targetCellIndex].click();
@@ -204,6 +204,10 @@ function startNewGame() {
   }
   modifyCellsEventListener("add");
   clearGameBoard();
+
+  if (currentPlayer === "cpu-1") {
+    aiMove();
+  }
 }
 
 function modifyCellsEventListener(command) {
@@ -251,5 +255,4 @@ modeButtons[2].addEventListener("click", function () {
   player2 = "cpu-2";
   closeOverlay(modes);
   startNewGame();
-  aiMove();
 });
