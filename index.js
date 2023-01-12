@@ -47,7 +47,9 @@ function play(e) {
   e.target.removeEventListener(e.type, arguments.callee);
   cellIndex = cells.indexOf(this);
   recordMove(cellIndex, piece);
-  passTurn(previousPlayer);
+  setTimeout(() => {
+    passTurn(previousPlayer);
+  }, 1000);
 }
 
 function passTurn(player) {
@@ -55,7 +57,7 @@ function passTurn(player) {
   let delay = 0;
 
   if (hasWinner) {
-    delay = 2000;
+    delay = 3000;
     modifyCellsEventListener("remove");
 
     if (player === "player-1") {
@@ -217,7 +219,6 @@ function modifyCellsEventListener(command) {
     }
   } else if (command === "remove") {
     for (let i = 0; i < cells.length; i++) {
-      // cells[i].addEventListener("click", play);
       cells[i].removeEventListener("click", play);
     }
   }
