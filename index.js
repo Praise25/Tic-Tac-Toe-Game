@@ -131,7 +131,6 @@ function recordMove(cellIndex, piece) {
     position = cellIndex % 3;
     gameBoard[2][position] = piece;
   }
-  // comment out later
   // console.log(gameBoard);
 }
 
