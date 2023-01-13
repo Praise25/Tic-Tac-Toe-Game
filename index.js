@@ -47,6 +47,7 @@ function play(e) {
   e.target.removeEventListener(e.type, arguments.callee);
   cellIndex = cells.indexOf(this);
   recordMove(cellIndex, piece);
+  modifyCellsEventListener("remove")
   setTimeout(() => {
     passTurn(previousPlayer);
   }, 300);
@@ -54,6 +55,7 @@ function play(e) {
 
 function passTurn(player) {
   let hasWinner = checkForWinner();
+  let hasStalemate = checkForStalemate();
   let delay = 0;
 
   if (hasWinner) {
@@ -83,8 +85,12 @@ function passTurn(player) {
         turnDisplay.innerText = "CPU 2 Wins!!!";
       }
     }
+  } else if(hasStalemate) {
+    delay = 3000;
+    turnDisplay.innerText = "Stalemate!!!";
   } else {
     delay = 500;
+    modifyCellsEventListener("add")
 
     if (currentPlayer === "player-1") {
       if (player2 === "cpu-2") {
@@ -169,6 +175,15 @@ function checkForWinner() {
   } else {
     return false;
   }
+}
+
+function checkForStalemate() {
+  let freeCells = getFreeCells();
+  console.log(freeCells);
+  if (freeCells.length === 0) {
+    return true;
+  }
+  return false;
 }
 
 function getFreeCells() {
