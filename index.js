@@ -197,7 +197,6 @@ function getFreeCells() {
 
 function aiMove() {
   let freeCells = getFreeCells();
-  // console.log(freeCells);
   let targetCellIndex = Math.floor(Math.random() * (freeCells.length - 1));
   setTimeout(() => {
     freeCells[targetCellIndex].click();
